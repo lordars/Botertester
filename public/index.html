@@ -25,6 +25,12 @@
         <label for="task-title">Task title</label>
         <div class="form-row">
           <input id="task-title" name="title" maxlength="120" placeholder="What needs to be done?" required>
+          <label for="task-priority">Priority</label>
+          <select id="task-priority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
           <button type="submit">Add task</button>
         </div>
         <p id="form-message" class="message" role="status"></p>
@@ -40,6 +46,13 @@
           <option value="todo">To do</option>
           <option value="doing">In progress</option>
           <option value="done">Done</option>
+        </select>
+        <label class="filter-label" for="priority-filter">Filter by priority</label>
+        <select id="priority-filter">
+          <option value="all">All</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
         </select>
       </div>
       <ul id="task-list" class="task-list" aria-live="polite"></ul>

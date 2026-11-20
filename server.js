@@ -9,9 +9,9 @@ const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const store = new TaskStore([
-  { id: 1, title: 'Read the project requirements', status: 'todo', createdAt: new Date().toISOString() },
-  { id: 2, title: 'Review the API', status: 'doing', createdAt: new Date().toISOString() },
-  { id: 3, title: 'Run the automated tests', status: 'done', createdAt: new Date().toISOString() }
+  { id: 1, title: 'Read the project requirements', status: 'todo', priority: 'medium', createdAt: new Date().toISOString() },
+  { id: 2, title: 'Review the API', status: 'doing', priority: 'medium', createdAt: new Date().toISOString() },
+  { id: 3, title: 'Run the automated tests', status: 'done', priority: 'medium', createdAt: new Date().toISOString() }
 ]);
 
 function sendJson(response, statusCode, payload) {
