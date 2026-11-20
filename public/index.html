@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A tiny task manager for testing local development workflows.">
+  <title>TaskFlow QA Lab</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <div>
+        <p class="eyebrow">OPENBOT WORKFLOW TEST</p>
+        <h1>TaskFlow</h1>
+        <p class="subtitle">A small task manager for testing Pull Request automation.</p>
+      </div>
+      <span id="health" class="health" aria-live="polite">Checking API…</span>
+    </header>
+
+    <section class="panel" aria-labelledby="create-heading">
+      <h2 id="create-heading">Add a task</h2>
+      <form id="task-form">
+        <label for="task-title">Task title</label>
+        <div class="form-row">
+          <input id="task-title" name="title" maxlength="120" placeholder="What needs to be done?" required>
+          <button type="submit">Add task</button>
+        </div>
+        <p id="form-message" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="tasks-heading">
+      <div class="section-heading">
+        <h2 id="tasks-heading">Tasks</h2>
+        <label class="filter-label" for="status-filter">Filter by status</label>
+        <select id="status-filter">
+          <option value="all">All</option>
+          <option value="todo">To do</option>
+          <option value="doing">In progress</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+      <p id="empty-state" class="empty-state" hidden>No tasks match this filter.</p>
+    </section>
+
+    <footer>TaskFlow QA Lab · Local test application</footer>
+  </main>
+</body>
+</html>
