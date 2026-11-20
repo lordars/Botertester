@@ -4,6 +4,8 @@ const taskList = document.querySelector('#task-list');
 const taskForm = document.querySelector('#task-form');
 const titleInput = document.querySelector('#task-title');
 const statusFilter = document.querySelector('#status-filter');
+const priorityFilter = document.querySelector('#priority-filter');
+const priorityInput = document.querySelector('#task-priority');
 const emptyState = document.querySelector('#empty-state');
 const formMessage = document.querySelector('#form-message');
 const healthLabel = document.querySelector('#health');
@@ -26,6 +28,10 @@ function createTaskElement(task) {
   const title = document.createElement('span');
   title.className = 'task-title';
   title.textContent = task.title;
+
+  const priorityBadge = document.createElement('span');
+  priorityBadge.className = 'task-priority';
+  priorityBadge.textContent = task.priority;
 
   const status = document.createElement('select');
   status.className = 'task-status';
@@ -64,14 +70,18 @@ function createTaskElement(task) {
     }
   });
 
-  item.append(title, status, removeButton);
+  item.append(title, priorityBadge, status, removeButton);
   return item;
 }
 
 async function loadTasks() {
   const { tasks } = await api('/api/tasks');
   const selectedStatus = statusFilter.value;
-  const visibleTasks = tasks.filter((task) => selectedStatus === 'all' || task.status === selectedStatus);
+  const selectedPriority = priorityFilter.value;
+  const visibleTasks = tasks.filter((task) =>
+    (selectedStatus === 'all' || task.status === selectedStatus) &&
+    (selectedPriority === 'all' || task.priority === selectedPriority)
+  );
   taskList.replaceChildren(...visibleTasks.map(createTaskElement));
   emptyState.hidden = visibleTasks.length !== 0;
 }
@@ -93,7 +103,7 @@ taskForm.addEventListener('submit', async (event) => {
   try {
     await api('/api/tasks', {
       method: 'POST',
-      body: JSON.stringify({ title: titleInput.value })
+      body: JSON.stringify({ title: titleInput.value, priority: priorityInput.value })
     });
     titleInput.value = '';
     await loadTasks();
@@ -104,6 +114,9 @@ taskForm.addEventListener('submit', async (event) => {
 });
 
 statusFilter.addEventListener('change', () => {
+  loadTasks().catch((error) => { formMessage.textContent = error.message; });
+});
+priorityFilter.addEventListener('change', () => {
   loadTasks().catch((error) => { formMessage.textContent = error.message; });
 });
 

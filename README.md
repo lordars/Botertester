@@ -30,11 +30,12 @@ npm run check
 
 - `GET /api/health` — health check
 - `GET /api/tasks` — list tasks
-- `POST /api/tasks` — create a task (`{"title":"Example"}`)
-- `PATCH /api/tasks/:id` — update title or status
+- `POST /api/tasks` — create a task (`{"title":"Example"}` or `{"title":"Example","priority":"high"}`)
+- `PATCH /api/tasks/:id` — update title, status, or priority
 - `DELETE /api/tasks/:id` — delete a task
 
 Allowed statuses: `todo`, `doing`, `done`.
+Allowed priorities: `low`, `medium`, `high`. New tasks default to `medium`. Invalid priorities return HTTP 422.
 
 ## Suggested PR exercise
 

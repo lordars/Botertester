@@ -1,15 +1,16 @@
 'use strict';
 
 const VALID_STATUSES = new Set(['todo', 'doing', 'done']);
+const VALID_PRIORITIES = new Set(['low', 'medium', 'high']);
 
 class TaskStore {
   constructor(initialTasks = []) {
-    this.tasks = initialTasks.map((task) => ({ ...task }));
+    this.tasks = initialTasks.map((task) => ({ ...task, priority: VALID_PRIORITIES.has(task?.priority) ? task.priority : 'medium' }));
     this.nextId = this.tasks.reduce((max, task) => Math.max(max, task.id), 0) + 1;
   }
 
   list() {
-    return this.tasks.map((task) => ({ ...task }));
+    return this.tasks.map((task) => ({ ...task, priority: VALID_PRIORITIES.has(task?.priority) ? task.priority : 'medium' }));
   }
 
   create(input) {
@@ -21,15 +22,21 @@ class TaskStore {
       throw new RangeError('Title must be 120 characters or fewer.');
     }
 
-    const status = input.status ?? 'todo';
+    const status = input?.status ?? 'todo';
     if (!VALID_STATUSES.has(status)) {
       throw new TypeError('Status must be todo, doing, or done.');
+    }
+
+    const priority = input?.priority === undefined ? 'medium' : input.priority;
+    if (!VALID_PRIORITIES.has(priority)) {
+      throw new TypeError('Priority must be low, medium, or high.');
     }
 
     const task = {
       id: this.nextId++,
       title,
       status,
+      priority,
       createdAt: new Date().toISOString()
     };
     this.tasks.push(task);
@@ -54,6 +61,13 @@ class TaskStore {
       task.status = changes.status;
     }
 
+    if (Object.hasOwn(changes, 'priority')) {
+      if (!VALID_PRIORITIES.has(changes.priority)) {
+        throw new TypeError('Priority must be low, medium, or high.');
+      }
+      task.priority = changes.priority;
+    }
+
     return { ...task };
   }
 
@@ -65,4 +79,4 @@ class TaskStore {
   }
 }
 
-module.exports = { TaskStore, VALID_STATUSES };
+module.exports = { TaskStore, VALID_STATUSES, VALID_PRIORITIES };
